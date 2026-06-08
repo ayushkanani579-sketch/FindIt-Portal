@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Claim Requests</title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+Claim Requests
+</h1>
+
+
+
+{% for req in requests %}
+
+
+<div style="
+background:white;
+padding:20px;
+margin:20px;
+border-radius:15px;
+box-shadow:0 5px 15px #ccc;
+">
+
+
+<h2>
+{{ req.item.item_name }}
+</h2>
+
+
+<img 
+src="{{ url_for(
+'static',
+filename='uploads/'+req.item.image_path
+)}}"
+width="200"
+>
+
+
+
+<p>
+
+Requested by:
+
+<b>
+{{ req.requester.username }}
+</b>
+
+</p>
+
+
+
+<p>
+
+Phone:
+
+{{ req.requester.phone }}
+
+</p>
+
+
+
+<p>
+
+Message:
+
+{{ req.message }}
+
+</p>
+
+
+
+<p>
+
+Status:
+
+{{ req.status }}
+
+</p>
+
+
+
+{% if req.status=="Pending" %}
+
+
+<form method="POST"
+action="{{url_for('accept_claim',
+id=req.id)}}">
+
+
+<button>
+Accept
+</button>
+
+
+</form>
+
+
+
+<form method="POST"
+action="{{url_for('reject_claim',
+id=req.id)}}">
+
+
+<button>
+Reject
+</button>
+
+
+</form>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+{% endfor %}
+
+
+
+</body>
+
+</html>

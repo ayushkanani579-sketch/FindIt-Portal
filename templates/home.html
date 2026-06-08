@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindIt Portal</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:linear-gradient(to right,#eef2ff,#dbeafe);
+            color:#333;
+        }
+
+        nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:40px 80px;
+            background:white;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo h1{
+            color:#4338ca;
+            font-size:32px;
+        }
+
+        .logo p{
+            color:gray;
+            font-size:14px;
+        }
+
+        .nav-buttons a{
+            text-decoration:none;
+            padding:10px 20px;
+            margin-left:10px;
+            border-radius:10px;
+            font-size:16px;
+        }
+
+        .login-btn{
+            background:#4338ca;
+            color:white;
+        }
+
+        .signup-btn{
+            border:2px solid #4338ca;
+            color:#4338ca;
+            background:white;
+        }
+
+        .hero{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:80px 60px;
+            gap:50px;
+            flex-wrap:wrap;
+        }
+
+        .hero-text{
+            flex:1;
+        }
+
+        .hero-text h2{
+            font-size:52px;
+            color:#312e81;
+            margin-bottom:25px;
+        }
+
+        .hero-text p{
+            font-size:18px;
+            line-height:1.8;
+            color:#555;
+        }
+
+        .hero-buttons{
+            margin-top:30px;
+        }
+
+        .hero-buttons a{
+            text-decoration:none;
+            padding:14px 28px;
+            margin-right:15px;
+            border-radius:12px;
+            font-size:16px;
+            display:inline-block;
+        }
+
+        .lost-btn{
+            background:#4338ca;
+            color:white;
+        }
+
+        .found-btn{
+            border:2px solid #4338ca;
+            color:#4338ca;
+            background:white;
+        }
+
+        .list-btn{
+            border:4px solid #4338ca;
+            color:#4338ca;
+            background:rgba(255, 255, 255, 0.578);
+        }
+
+        .requests-btn{
+            border:2px solid #4338ca;
+            color:#4338ca;
+            background:white;
+        }
+
+        .hero img{
+            width:500px;
+            border-radius:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .features{
+            background:white;
+            padding:80px 60px;
+            text-align:center;
+        }
+
+        .features h2{
+            font-size:40px;
+            color:#4338ca;
+            margin-bottom:50px;
+        }
+
+        .feature-cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:30px;
+        }
+
+        .card{
+            background:#eef2ff;
+            padding:30px;
+            border-radius:20px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .emoji{
+            font-size:50px;
+        }
+
+        .gallery{
+            padding:80px 60px;
+            text-align:center;
+        }
+
+        .gallery h2{
+            font-size:40px;
+            color:#4338ca;
+            margin-bottom:40px;
+        }
+
+        .gallery-images{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        .gallery-images img{
+            width:100%;
+            height:300px;
+            object-fit:cover;
+            border-radius:20px;
+        }
+
+        .auth-section{
+            background:#4338ca;
+            color:white;
+            padding:80px 60px;
+            text-align:center;
+        }
+
+        .auth-buttons{
+            margin-top:30px;
+        }
+
+        .auth-buttons a{
+            text-decoration:none;
+            padding:14px 28px;
+            margin:10px;
+            border-radius:12px;
+            display:inline-block;
+        }
+
+        .auth-login{
+            background:white;
+            color:#4338ca;
+        }
+
+        .auth-signup{
+            border:2px solid white;
+            color:white;
+        }
+
+        .logo-img{
+            width:500px;
+            height:200px;
+            display:block;
+           
+        }
+
+        .flash-container{
+
+            position:fixed;
+            top:20px;
+            right:20px;
+            width:320px;
+            z-index:9999;
+
+        }
+
+
+        .alert{
+
+            padding:15px 20px;
+            margin-bottom:15px;
+            border-radius:12px;
+            font-weight:bold;
+            box-shadow:0 5px 15px rgba(0,0,0,0.2);
+            animation:slide 0.3s ease;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+        }
+
+
+        .alert.success{
+
+            background:#dcfce7;
+            color:#166534;
+
+        }
+
+
+        .alert.danger{
+
+            background:#fee2e2;
+            color:#991b1b;
+
+        }
+
+
+        .alert.warning{
+
+            background:#fef3c7;
+            color:#92400e;
+
+        }
+
+
+        .close{
+
+            cursor:pointer;
+            font-size:22px;
+
+        }
+
+
+
+        @keyframes slide{
+
+        from{
+
+            transform:translateX(100%);
+            opacity:0;
+
+        }
+
+        to{
+
+            transform:translateX(0);
+            opacity:1;
+
+        }
+
+        }
+
+        footer{
+            background:#111827;
+            color:#ccc;
+            padding:40px 60px;
+            text-align:center;
+        }
+
+        @media(max-width:900px){
+            .hero{
+                flex-direction:column;
+                text-align:center;
+            }
+
+            nav{
+                flex-direction:column;
+                gap:15px;
+            }
+
+            .hero img{
+                width:100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+   <nav>
+
+    <div class="logo">
+
+    <div>
+    <a href="{{ url_for('home') }}">
+    <img src="{{ url_for('static', filename='images/logo.png') }}"
+    class="logo-img">
+    </a>
+    </div>
+
+    <h1>Lost & Found Management System</h1>
+
+    </div>
+
+
+
+    <div class="nav-buttons">
+
+
+    {% if current_user.is_authenticated %}
+
+
+    <a href="{{ url_for('about') }}"
+    class="login-btn">
+
+    Dashboard
+
+    </a>
+
+
+    <a href="{{ url_for('logout') }}"
+    class="signup-btn">
+
+    Logout
+
+    </a>
+
+
+    {% else %}
+
+
+    <a href="{{ url_for('login') }}"
+    class="login-btn">
+
+    Login
+
+    </a>
+
+
+    <a href="{{ url_for('register') }}"
+    class="signup-btn">
+
+    Sign Up
+
+    </a>
+
+
+    {% endif %}
+
+
+    </div>
+
+
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+<div class="flash-container">
+
+{% for category, message in messages %}
+
+<div class="alert {{ category }}">
+
+    {{ message }}
+
+    <span class="close" onclick="this.parentElement.style.display='none';">
+        ×
+    </span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endwith %}
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-text">
+            <h2>Reconnect People With Their Lost Belongings</h2>
+
+            <p>
+                FindIt Portal helps users report and search lost items easily.
+                Users can upload lost or found items securely through the portal.
+            </p>
+
+            <div class="hero-buttons">
+
+
+{% if current_user.is_authenticated %}
+
+
+<a href="{{url_for('about')}}"
+class="lost-btn">
+
+Open Dashboard
+
+</a>
+
+
+{% else %}
+
+
+<a href="{{url_for('login')}}"
+class="lost-btn">
+
+Login To Continue
+
+</a>
+
+
+<a href="{{url_for('register')}}"
+class="found-btn">
+
+Create Account
+
+</a>
+
+
+{% endif %}
+
+
+</div>
+            </div>
+        </div>
+
+        <div>
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+
+        <h2>Features</h2>
+
+        <div class="feature-cards">
+
+            <div class="card">
+                <div class="emoji">🔍</div>
+                <h3>Easy Search</h3>
+                <p>Search lost and found items quickly.</p>
+            </div>
+
+            <div class="card">
+                <div class="emoji">📸</div>
+                <h3>Image Upload</h3>
+                <p>Upload images of lost and found items.</p>
+            </div>
+
+            <div class="card">
+                <div class="emoji">🔐</div>
+                <h3>Secure Login</h3>
+                <p>Only authenticated users can access the portal.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery">
+
+        <h2>Portal Preview</h2>
+
+        <div class="gallery-images">
+
+            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&auto=format&fit=crop">
+
+            <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?q=80&w=1200&auto=format&fit=crop">
+
+            <img src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=1200&auto=format&fit=crop">
+
+        </div>
+
+    </section>
+
+    <!-- Authentication Section -->
+    <section class="auth-section">
+
+
+{% if current_user.is_authenticated %}
+
+
+<h2>
+Welcome Back {{current_user.username}}
+</h2>
+
+<p>
+Go to dashboard to manage lost, found and claim requests.
+</p>
+
+
+<div class="auth-buttons">
+
+<a href="{{url_for('about')}}"
+class="auth-login">
+
+Dashboard
+
+</a>
+
+
+</div>
+
+
+
+{% else %}
+
+
+<h2>User Authentication Required</h2>
+
+<p>
+Login before reporting or claiming items.
+</p>
+
+
+<div class="auth-buttons">
+
+
+<a href="{{url_for('login')}}"
+class="auth-login">
+
+Login
+
+</a>
+
+
+<a href="{{url_for('register')}}"
+class="auth-signup">
+
+Create Account
+
+</a>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+</section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>FindIt Portal</h3>
+        <p>Email: support@finditportal.com</p>
+        <p>© 2026 FindIt Portal</p>
+    </footer>
+
+</body>
+</html>
+

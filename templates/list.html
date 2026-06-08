@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Browse Found Items</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f3f4f6;
+        }
+
+        /* Navbar */
+
+        nav{
+            background:white;
+            padding:20px 50px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        .logo h1{
+            color:#0891b2;
+            font-size:32px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            margin-left:20px;
+            color:#0891b2;
+            font-weight:bold;
+        }
+
+        /* Main Layout */
+
+        .main-container{
+            display:flex;
+            gap:20px;
+            padding:30px;
+        }
+
+        /* Sidebar */
+
+        .sidebar{
+            width:280px;
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            height:fit-content;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2{
+            margin-bottom:20px;
+            color:#0891b2;
+        }
+
+        .filter-group{
+            margin-bottom:25px;
+        }
+
+        .filter-group label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+        }
+
+        .filter-group input,
+        .filter-group select{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:10px;
+        }
+
+        /* Content */
+
+        .content{
+            flex:1;
+        }
+
+        /* Search Bar */
+
+        .search-box{
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom:25px;
+        }
+
+        .search-box form{
+            display:flex;
+            gap:15px;
+            flex-wrap:wrap;
+        }
+
+        .search-box input{
+            flex:1;
+            padding:14px;
+            border:1px solid #ccc;
+            border-radius:10px;
+            font-size:16px;
+        }
+
+        .search-box button{
+            padding:14px 25px;
+            border:none;
+            background:#0891b2;
+            color:white;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .search-box button:hover{
+            background:#0e7490;
+        }
+
+        /* Product Grid */
+
+        .items-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:25px;
+        }
+
+        /* Item Card */
+
+        .item-card{
+            background:white;
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+            transition:0.3s;
+        }
+
+        .item-card:hover{
+            transform:translateY(-6px);
+        }
+
+        .item-card img{
+            width:100%;
+            height:250px;
+            object-fit:cover;
+        }
+
+        .item-details{
+            padding:20px;
+        }
+
+        .item-details h3{
+            color:#111827;
+            margin-bottom:10px;
+        }
+
+        .category{
+            display:inline-block;
+            background:#cffafe;
+            color:#0e7490;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:14px;
+            margin-bottom:12px;
+        }
+
+        .description{
+            color:#555;
+            margin-bottom:15px;
+            line-height:1.6;
+        }
+
+        .info{
+            margin-bottom:8px;
+            font-size:15px;
+        }
+
+        .contact-btn{
+            width:100%;
+            margin-top:15px;
+            padding:12px;
+            border:none;
+            background:#0891b2;
+            color:white;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .contact-btn:hover{
+            background:#0e7490;
+        }
+
+        /* Responsive */
+
+        @media(max-width:900px){
+
+            .main-container{
+                flex-direction:column;
+            }
+
+            .sidebar{
+                width:100%;
+            }
+
+            nav{
+                flex-direction:column;
+                gap:10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav>
+
+        <div class="logo">
+            <h1>FindIt Portal</h1>
+        </div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+           
+        </div>
+
+    </nav>
+
+    <!-- Main Container -->
+
+    <div class="main-container">
+
+        <!-- Sidebar Filters -->
+
+        <div class="sidebar">
+
+            <h2>Filters</h2>
+
+            <!-- Category Filter -->
+
+            <div class="filter-group">
+
+                <label>Category</label>
+
+                <select onchange="filterCategory(this.value)">
+
+                    <option value="">All Categories</option>
+
+                    <option value="Electronics">Electronics</option>
+
+                    <option value="Clothes">Clothes</option>
+
+                    <option value="Books">Books</option>
+
+                    <option value="Documents">Documents</option>
+
+                    <option value="Accessories">Accessories</option>
+
+                    <option value="Bags">Bags</option>
+
+                    <option value="Jewellery">Jewellery</option>
+
+                    <option value="Mobile Phones">Mobile Phones</option>
+
+                    <option value="Laptop">Laptop</option>
+
+                    <option value="Keys">Keys</option>
+
+                    <option value="Wallet">Wallet</option>
+
+                    <option value="ID Cards">ID Cards</option>
+
+                    <option value="Sports Items">Sports Items</option>
+
+                    <option value="Others">Others</option>
+
+                </select>
+
+            </div>
+
+            <!-- Sort -->
+
+            <div class="filter-group">
+
+                <label>Sort By</label>
+
+                <select onchange="sortItems(this.value)">
+
+                    <option value="">Default</option>
+
+                    <option value="latest">Latest First</option>
+
+                    <option value="oldest">Oldest First</option>
+
+                    <option value="name">Item Name</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- Main Content -->
+
+        <div class="content">
+
+            <!-- Search -->
+
+            <div class="search-box">
+
+                <form method="GET" action="{{ url_for('list') }}">
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search items..."
+                    >
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- Items Grid -->
+
+            <div class="items-grid">
+
+                {% for item in found_items %}
+
+
+<div class="item-card">
+
+
+    {% if item.image_path %}
+
+    <img
+    src="{{ url_for(
+    'static',
+    filename='uploads/' + item.image_path
+    ) }}"
+    >
+
+    {% endif %}
+
+
+
+    <div class="item-details">
+
+
+        {% if item.status == "Claimed" %}
+
+
+        <span class="category"
+        style="background:#dcfce7;color:green">
+
+            Claimed
+
+        </span>
+
+
+        {% else %}
+
+
+        <span class="category">
+
+            {{ item.category }}
+
+        </span>
+
+
+        {% endif %}
+
+
+
+
+        <h3>
+            {{ item.item_name }}
+        </h3>
+
+
+
+        <p class="description">
+
+            {{ item.description }}
+
+        </p>
+
+
+
+        <p class="info">
+
+            📍 <strong>Location:</strong>
+
+            {{ item.location }}
+
+        </p>
+
+
+
+
+        <p class="info">
+
+            📅 <strong>Date Found:</strong>
+
+            {{ item.date_found }}
+
+        </p>
+
+
+
+
+        <p class="info">
+
+            👤 <strong>Found By:</strong>
+
+            {{ item.owner.username }}
+
+        </p>
+
+
+
+
+        {% if item.status != "Claimed" %}
+
+
+        <form action="{{url_for('claim',id=item.id)}}" method="POST">
+
+            <button class="contact-btn">
+
+            Request Claim
+
+            </button>
+
+        </form>
+
+
+
+        <a href="{{ url_for(
+        'claim',
+        id=item.id
+        ) }}">
+
+
+            <button class="contact-btn"
+            style="margin-top:10px;background:#16a34a">
+
+                Claim Item
+
+            </button>
+
+
+        </a>
+
+
+        {% else %}
+
+
+        <button class="contact-btn"
+        style="background:gray">
+
+            ✔ Item Claimed
+
+        </button>
+
+
+        {% endif %}
+
+
+
+    </div>
+
+
+</div>
+
+
+{% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+<script>
+
+function filterCategory(value){
+
+    if(value){
+
+        window.location.href =
+        "{{ url_for('list') }}" 
+        + "?category=" 
+        + value;
+
+    }
+    else{
+
+        window.location.href =
+        "{{ url_for('list') }}";
+
+    }
+
+}
+
+</script>
+<script>
+
+function filterSort(value){
+
+    window.location.href =
+    "{{ url_for('list') }}"
+    + "?sort="
+    + value;
+
+}
+
+</script>
+</html>

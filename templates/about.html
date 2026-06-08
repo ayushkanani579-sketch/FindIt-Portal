@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Dashboard</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:linear-gradient(to right,#eef2ff,#dbeafe);
+}
+
+
+.container{
+
+display:grid;
+grid-template-columns:repeat(2,300px);
+gap:30px;
+justify-content:center;
+margin-top:100px;
+
+}
+
+
+.card{
+
+background:white;
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 25px #aaa;
+
+}
+
+
+.card h2{
+
+color:#4338ca;
+
+}
+
+
+.card a{
+
+display:block;
+margin-top:20px;
+padding:12px;
+background:#4338ca;
+color:white;
+text-decoration:none;
+border-radius:10px;
+
+}
+
+.flash-container{
+
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:320px;
+    z-index:9999;
+
+}
+
+
+.alert{
+
+    padding:15px 20px;
+    margin-bottom:15px;
+    border-radius:12px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    animation:slide 0.3s ease;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+
+.alert.success{
+
+    background:#dcfce7;
+    color:#166534;
+
+}
+
+
+.alert.danger{
+
+    background:#fee2e2;
+    color:#991b1b;
+
+}
+
+
+.alert.warning{
+
+    background:#fef3c7;
+    color:#92400e;
+
+}
+
+
+.close{
+
+    cursor:pointer;
+    font-size:22px;
+
+}
+
+
+
+@keyframes slide{
+
+from{
+
+    transform:translateX(100%);
+    opacity:0;
+
+}
+
+to{
+
+    transform:translateX(0);
+    opacity:1;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+<div class="flash-container">
+
+{% for category, message in messages %}
+
+<div class="alert {{ category }}">
+
+    {{ message }}
+
+    <span class="close" onclick="this.parentElement.style.display='none';">
+        ×
+    </span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endwith %}
+
+<h1 style="text-align:center">
+Welcome {{current_user.username}}
+</h1>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+<h2>Lost Items</h2>
+
+<p>Report your lost item</p>
+
+<a href="{{url_for('lost')}}">
+Open
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Found Items</h2>
+
+<p>Report found item</p>
+
+<a href="{{url_for('found')}}">
+Open
+</a>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>Browse Items</h2>
+
+<p>Search found items</p>
+
+<a href="{{url_for('list')}}">
+Open
+</a>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>Requests</h2>
+
+<p>Manage claim requests</p>
+
+<a href="{{url_for('requests')}}">
+Open
+</a>
+
+</div>
+
+
+
+
+</div>
+
+
+</body>
+
+</html>
